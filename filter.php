@@ -193,7 +193,6 @@ class filter_stash extends moodle_text_filter {
 
             case 'i':
             default:
-                var_dump($text);
                 $display = $this->make_image_display($droprenderable, $text, $options);
                 break;
         }
