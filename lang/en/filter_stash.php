@@ -24,5 +24,5 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['filtername'] = 'Stash shortcodes support';
+$string['filtername'] = 'Stash snippets';
 $string['pluginname'] = 'Stash filter';
