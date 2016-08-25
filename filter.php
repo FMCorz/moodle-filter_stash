@@ -49,7 +49,6 @@ class filter_stash extends moodle_text_filter {
     const START_FLAG = '[drop:';
     const END_FLAG = ']';
 
-
     /**
      * The filtering occurs here.
      *
