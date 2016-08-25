@@ -169,7 +169,13 @@ class filter_stash extends moodle_text_filter {
         try {
             $drop = $manager->get_drop($id);
             $item = $manager->get_item($drop->get_itemid());
+
+        } catch (dml_exception $e) {
+            // Most likely the drop doesn't exist.
+            return $display;
+
         } catch (coding_exception $e) {
+            // Some error occured, who knows?
             return $display;
         }
 
