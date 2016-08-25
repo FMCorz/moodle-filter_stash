@@ -64,7 +64,7 @@ class filter_stash extends moodle_text_filter {
         }
 
         $newtext = '';
-        while (($pos = strpos($text, self::START_FLAG))) {
+        while (($pos = strpos($text, self::START_FLAG)) !== false) {
             $newtext .= substr($text, 0, $pos);
 
             $text = substr($text, $pos);
