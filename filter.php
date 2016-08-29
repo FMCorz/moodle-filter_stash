@@ -163,8 +163,13 @@ class filter_stash extends moodle_text_filter {
 
         $display = '';
 
-        // Attempt to find the drop.
+        // Only process when the stash is enabled.
         $manager = manager::get($this->coursecontext->instanceid);
+        if (!$manager->is_enabled()) {
+            return $display;
+        }
+
+        // Attempt to find the drop.
         try {
             $drop = $manager->get_drop($id);
             $item = $manager->get_item($drop->get_itemid());
