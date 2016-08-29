@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v1.0.1
+------
+
+- Prevent exception when the stash is disabled
+
 v1.0.0
 ------
 
