@@ -34,6 +34,7 @@ use block_stash\manager;
 use block_stash\output\drop as droprenderable;
 use block_stash\output\drop_image;
 use block_stash\output\drop_text;
+use block_stash\output\trade as traderenderable;
 
 /**
  * Filter class.
@@ -47,6 +48,7 @@ class filter_stash extends moodle_text_filter {
     protected $coursecontext;
 
     const START_FLAG = '[drop:';
+    const TRADE_FLAG = '[trade:';
     const END_FLAG = ']';
 
     /**
@@ -63,6 +65,7 @@ class filter_stash extends moodle_text_filter {
         }
 
         $newtext = '';
+
         while (($pos = strpos($text, self::START_FLAG)) !== false) {
             $newtext .= substr($text, 0, $pos);
 
@@ -82,6 +85,30 @@ class filter_stash extends moodle_text_filter {
         }
 
         $newtext .= $text;
+        // Before returning let's check it for trades.
+
+        $text = $newtext;
+        $newtext = '';
+
+        while (($pos = strpos($text, self::TRADE_FLAG)) !== false) {
+            $newtext .= substr($text, 0, $pos);
+
+            $text = substr($text, $pos);
+            $endpos = strpos($text, self::END_FLAG);
+
+            if ($endpos === false) {
+                break;
+            }
+
+            // Extract the short code and remove it from the remaining content.
+            $shortcode = substr($text, 0, $endpos + 1);
+            $text = substr($text, $endpos + 1);
+
+            // Compute the shortcode.
+            $newtext .= $this->transform_shortcode_for_trade($shortcode);
+        }
+        $newtext .= $text;
+
         return $newtext;
     }
 
@@ -113,6 +140,18 @@ class filter_stash extends moodle_text_filter {
         $renderable = new drop_text($drop, $text);
         $output = $PAGE->get_renderer('block_stash');
         return $output->render($renderable);
+    }
+
+    /**
+     * Display trade.
+     *
+     * @param traderenderable $trade The trade renderable.
+     * @return string HTML fragment.
+     */
+    protected function make_trade_display(traderenderable $trade) {
+        global $PAGE;
+        $output = $PAGE->get_renderer('block_stash');
+        return $output->render($trade);
     }
 
     /**
@@ -184,7 +223,7 @@ class filter_stash extends moodle_text_filter {
         }
 
         // Confirm the hash.
-        if (strpos($drop->get_hashcode(), $hashportion) !== 0) {
+        if (strpos($drop->get('hashcode'), $hashportion) !== 0) {
             return $display;
         }
 
@@ -206,6 +245,56 @@ class filter_stash extends moodle_text_filter {
                 $display = $this->make_image_display($droprenderable, $text, $options);
                 break;
         }
+
+        return $display;
+    }
+
+    public function transform_shortcode_for_trade($shortcode) {
+        // Remove the start and end flags.
+        $code = substr($shortcode, 7, -1);
+        // Split on colons.
+        $parts = explode(':', $code);
+
+        // We should only have two parts. Ignore if we have something different.
+        if (count($parts) != 2) {
+            return $shortcode;
+        }
+
+        $id = (int) array_shift($parts);
+        $hashportion = array_shift($parts);
+        if (!$id || strlen($hashportion) < 3) {
+            // Invalid code, we leave.
+            return $shortcode;
+        }
+
+        $display = '';
+        // Only process when the stash is enabled.
+        $manager = manager::get($this->coursecontext->instanceid);
+        if (!$manager->is_enabled()) {
+            return $display;
+        }
+
+        // Attempt to find the drop.
+        try {
+            $trade = $manager->get_trade($id);
+        } catch (dml_exception $e) {
+            // Most likely the drop doesn't exist.
+            return $display;
+
+        } catch (coding_exception $e) {
+            // Some error occured, who knows?
+            return $display;
+        }
+
+        // Confirm the hash.
+        if (strpos($trade->get('hashcode'), $hashportion) !== 0) {
+            return $display;
+        }
+
+        $tradeitems = $manager->get_trade_items($trade->get_id());
+        $traderenderable = new traderenderable($trade, $manager, $tradeitems);
+        // print_object($traderenderable);
+        $display = $this->make_trade_display($traderenderable);
 
         return $display;
     }
