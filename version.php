@@ -24,7 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2017052901;
+$plugin->version   = 2017052902;
 $plugin->requires  = 2015051100;
 $plugin->component = 'filter_stash';
 $plugin->maturity  = MATURITY_STABLE;
