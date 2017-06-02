@@ -28,7 +28,7 @@ $plugin->version   = 2017052902;
 $plugin->requires  = 2015051100;
 $plugin->component = 'filter_stash';
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = '1.0.2';
+$plugin->release   = '1.1.0';
 $plugin->dependencies = array(
     'block_stash'  => 2016082601,
 );

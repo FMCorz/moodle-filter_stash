@@ -3,7 +3,7 @@ Filter Stash
 
 Simplify the usage of the block [Stash](https://moodle.org/plugins/block_stash) by providing shortcodes to place items.
 
-Why using this?
+Why use this?
 ---------------
 
 With this filter the snippet to place the items becomes very simple:
@@ -14,6 +14,13 @@ With this filter the snippet to place the items becomes very simple:
 * The shortcode is always visible when editing, unlike the Javascript snippet
 * Unlike the Javascript snippet, the shortcode will gracefully support newer versions
 * The snippet will (safely) make it through some security limitations
+
+The trading feature is only possible with the installation of this plugin. The snippet for trading is very similar to 
+placing drops.
+
+    [trade:123:abc]
+
+The same benefits above apply.
 
 Requirements
 ------------
