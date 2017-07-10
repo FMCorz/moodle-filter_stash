@@ -52,19 +52,26 @@ define([
     };
 
     Maker.prototype.getSnippet = function() {
-        var snippet = START_TAG,
-            drop = this.getDrop();
+        var preHash = START_TAG,
+            postHash = '',
+            drop = this.getDrop(),
+            hashLength = 3;
 
-        snippet += drop.get('id') + ':' + drop.get('hashcode').substring(0, 3);
+        preHash += drop.get('id') + ':';
 
         if (this._displayType == this.IMAGEANDBUTTON) {
-            snippet += ':i:' + this._getActionText();
+            postHash += ':i:' + this._getActionText();
         } else if (this._displayType == this.TEXT) {
-            snippet += ':t:' + this._getLabel();
+            postHash += ':t:' + this._getLabel();
         }
 
-        snippet += END_TAG;
-        return snippet;
+        postHash += END_TAG;
+        hashLength = Math.max(3, 32 - (preHash.length + postHash.length));
+
+        // Backup will only encode 32 characters long texts, so we ensure
+        // that the recommended snippet has the required length, in case it's
+        // the only thing in the textarea.
+        return preHash + drop.get('hashcode').substring(0, hashLength) + postHash;
     };
 
     return /** @alias module:filter_stash/drop-snippet-maker */ Maker;
