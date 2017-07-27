@@ -15,20 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version file.
+ * Filter install.
  *
  * @package    filter_stash
- * @copyright  2016 Frédéric Massart - FMCorz.net
+ * @copyright  2017 Frédéric Massart - FMCorz.net
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2017072700;
-$plugin->requires  = 2015051100;
-$plugin->component = 'filter_stash';
-$plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = '1.1.0';
-$plugin->dependencies = array(
-    'block_stash'  => 2016082601,
-);
+/**
+ * Filter install function.
+ *
+ * @return true
+ */
+function xmldb_filter_stash_install() {
+
+    // Enable the filter by default.
+    filter_set_global_state('stash', TEXTFILTER_ON);
+}
