@@ -223,7 +223,7 @@ class filter_stash extends moodle_text_filter {
         }
 
         // Confirm the hash.
-        if (strpos($drop->get('hashcode'), $hashportion) !== 0) {
+        if (strpos($drop->get_hashcode(), $hashportion) !== 0) {
             return $display;
         }
 
@@ -287,7 +287,7 @@ class filter_stash extends moodle_text_filter {
         }
 
         // Confirm the hash.
-        if (strpos($trade->get('hashcode'), $hashportion) !== 0) {
+        if (strpos($trade->get_hashcode(), $hashportion) !== 0) {
             return $display;
         }
 
