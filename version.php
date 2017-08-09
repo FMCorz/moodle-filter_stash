@@ -24,11 +24,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2017072700;
+$plugin->version   = 2017080900;
 $plugin->requires  = 2015051100;
 $plugin->component = 'filter_stash';
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = '1.1.0';
+$plugin->release   = '1.1.1';
 $plugin->dependencies = array(
     'block_stash'  => 2016082601,
 );
