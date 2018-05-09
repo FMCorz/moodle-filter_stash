@@ -3,6 +3,11 @@ Filter Stash
 
 Simplify the usage of the block [Stash](https://moodle.org/plugins/block_stash) by providing shortcodes to place items.
 
+Plugin retired!
+---------------
+
+This plugin has been retired in favour of the filter [Shortcodes](https://github.com/branchup/moodle-filter_shortcodes) and is therefore no longer maintained or supported.
+
 Why use this?
 ---------------
 
